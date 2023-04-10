@@ -86,6 +86,10 @@ public class VariableManage {
         this.variableList = variableList;
     }
 
+    public void setInputList(ArrayList<Var> inputList) {
+        this.inputList = inputList;
+    }
+
     /**
      * them bien moi vao day VariableManage
      * luu y neu da co trong danh sach => danh dau isDuplicated == true;
@@ -113,7 +117,7 @@ public class VariableManage {
     }
 
     public Var getVar(int index) {
-        return variableList.get(index);
+        return inputList.get(index);
     }
 
     public Var getVar(String name) {
@@ -143,6 +147,10 @@ public class VariableManage {
 
     public int getSize() {
         return this.variableList.size();
+    }
+
+    public int getInputListSize() {
+        return this.inputList.size();
     }
 
     public void printList() {

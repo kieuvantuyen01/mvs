@@ -192,6 +192,11 @@ public class DecisionNode extends CFGNode {
         CFGNode run = this.getThenNode();
         while ((run != null) && (run != this.endNode)) {
             run.index(thenVM);
+            for (Var var : vm.getVariableList()) {
+                if (var.getName().contains("res")) {
+                    var.increaseSSA();
+                }
+            }
             if (run instanceof DecisionNode) {
                 run = ((DecisionNode) run).getEndNode();
             } else {
@@ -212,7 +217,7 @@ public class DecisionNode extends CFGNode {
         }
         // sync
 
-        vm.setVariableList(sync(vm).getVariableList());
+        vm.setInputList(sync(vm).getInputList());
 
     }
 
@@ -220,7 +225,7 @@ public class DecisionNode extends CFGNode {
      * flag : = true neu can them syncNode va nguoc lai
      */
     private VariableManage sync(VariableManage vm) {
-        int size = thenVM.getSize();
+        int size = thenVM.getInputListSize();
         Var thenVar;
         Var elseVar;
         String leftHand;
@@ -264,14 +269,17 @@ public class DecisionNode extends CFGNode {
 		}
 		*/
         for (int i = 0; i < size; i++) {
-            thenVar = thenVM.getVariable(i);
-            elseVar = elseVM.getVariable(i);
+            thenVar = thenVM.getVar(i);
+            elseVar = elseVM.getVar(i);
 
             if (thenVar.getSsaIndex() < elseVar.getSsaIndex()) {
                 rightHand = thenVar.getVariableWithIndex();
+/*
                 thenVar.setSsaIndex(elseVar.getSsaIndex());
+*/
                 leftHand = thenVar.getVariableWithIndex();
                 syncNode = new SyncNode(leftHand, rightHand);
+                thenVM.getInputList().add(elseVar);
 
                 this.endOfThen.setNext(syncNode);
                 syncNode.setNext(endNode);

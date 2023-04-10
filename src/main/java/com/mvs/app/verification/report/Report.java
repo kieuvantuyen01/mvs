@@ -191,7 +191,7 @@ public class Report {
 
         i = begin;
         while (i <= end) {
-            if (result.get(i).contains("return_" + FunctionHelper.getShortenName(functionName) + "_0")) {
+            if (result.get(i).contains("return_" + FunctionHelper.getShortenName(functionName))) {
                 String valueStr = "";
                 i++;
                 while (i <= end && !result.get(i).contains("define-fun")) {

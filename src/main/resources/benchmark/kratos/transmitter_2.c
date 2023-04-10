@@ -20,10 +20,17 @@ void *t2()
 
 int transmitter_2()
 {
-
+  int res;
   t1();
   t2();
+  if (i >= 16 || j >= 16 || i <= 0 || j <= 0)
+  {
+    res = 0;
+  }
+  else
+  {
+    res = 1;
+  }
 
-  int res = (i >= 16 || j >= 16 || i <= 0 || j <= 0);
   return (res);
 }
