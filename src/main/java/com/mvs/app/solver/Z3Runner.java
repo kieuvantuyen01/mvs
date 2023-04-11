@@ -105,4 +105,16 @@ public class Z3Runner {
         }
         return result;
     }
+
+    public static void main(String[] args) {
+        List<String> result = new ArrayList<String>();
+        try {
+            result = runZ3("./src/main/resources/smt/transmitter_2.txt");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        for (String s : result) {
+            System.out.println(s);
+        }
+    }
 }

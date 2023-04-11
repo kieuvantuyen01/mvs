@@ -281,9 +281,9 @@ public class DecisionNode extends CFGNode {
                 syncNode = new SyncNode(leftHand, rightHand);
                 thenVM.getInputList().add(elseVar);
 
-                this.endOfThen.setNext(syncNode);
+                /*this.endOfThen.setNext(syncNode);
                 syncNode.setNext(endNode);
-                setEndOfThen(syncNode);
+                setEndOfThen(syncNode);*/
             } else if (elseVar.getSsaIndex() < thenVar.getSsaIndex()) {
                 rightHand = elseVar.getVariableWithIndex();
                 elseVar.setSsaIndex(thenVar.getSsaIndex());

@@ -112,7 +112,9 @@ public class mvsCFG extends ControlFlowGraph {
 
     public List<String> createFormulas() {
         List<String> formulas = FormulaCreater.createAssert(start, exit);
+        List<String> additionalFormulas = FormulaCreater.createAdditionalAssert(vm);
         List<String> advancedFormulas = FormulaCreater.createAdvancedAssert(vm);
+        formulas.addAll(additionalFormulas);
         formulas.addAll(advancedFormulas);
         return formulas;
     }
