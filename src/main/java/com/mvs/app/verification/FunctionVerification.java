@@ -49,9 +49,10 @@ public class FunctionVerification {
 //            cfg.ungoto();
             cfg.unfold(nLoops);
             //TuyenKV
-            cfg.printGraph();
+//            cfg.printGraph();
 //            cfg.unfold(10);
             cfg.index();
+            cfg.printGraph();
             smtInput = new SMTInput(cfg.getVm().getInputList(), cfg.createFormulas() );
         }
 

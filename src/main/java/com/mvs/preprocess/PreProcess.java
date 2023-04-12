@@ -210,7 +210,7 @@ public class PreProcess {
     }
 
     public static void main(String[] args) {
-        String linkToFile = "./src/main/resources/benchmark/kratos/transmitter_1.c";
+        String linkToFile = "./src/main/resources/benchmark/pthread/transmitter_1.c";
         ASTFactory ast = new ASTFactory(linkToFile);
         File oldFile = new File(linkToFile);
         try {
