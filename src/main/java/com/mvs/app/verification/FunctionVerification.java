@@ -8,7 +8,6 @@ import com.mvs.app.verification.userassertion.UserInput;
 import com.mvs.cfg.build.ASTFactory;
 import com.mvs.cfg.build.mvsCFG;
 import com.mvs.cfg.index.Var;
-import com.mvs.cfg.index.Variable;
 import org.eclipse.cdt.core.dom.ast.IASTFunctionDefinition;
 
 import java.io.File;
@@ -49,11 +48,11 @@ public class FunctionVerification {
 //            cfg.ungoto();
             cfg.unfold(nLoops);
             //TuyenKV
-//            cfg.printGraph();
-//            cfg.unfold(10);
+            cfg.printGraph();
+            //cfg.unfold(10);
             cfg.index();
             cfg.printGraph();
-            smtInput = new SMTInput(cfg.getVm().getInputList(), cfg.createFormulas() );
+            smtInput = new SMTInput(cfg.getVm().getInputList(), cfg.createFormulas());
         }
 
         // java.cfg.printGraph();

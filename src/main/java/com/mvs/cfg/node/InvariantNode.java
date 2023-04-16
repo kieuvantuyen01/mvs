@@ -1,7 +1,7 @@
 package com.mvs.cfg.node;
 
-import com.mvs.cfg.index.Index;
-import com.mvs.cfg.index.VariableManager;
+import com.mvs.cfg.index.Indexer;
+import com.mvs.cfg.index.VariableManage;
 import com.mvs.cfg.utils.ExpressionHelper;
 import org.eclipse.cdt.core.dom.ast.IASTFunctionDefinition;
 import org.eclipse.cdt.core.dom.ast.IASTStatement;
@@ -18,8 +18,8 @@ public class InvariantNode extends PlainNode {
         super(stm, func);
     }
 
-    public void index(VariableManager vm) {
-        super.setStatement((IASTStatement) Index.indexInvariant(super.getStatement(), vm));
+    public void index(VariableManage vm) {
+        super.setStatement((IASTStatement) Indexer.indexInvariant(super.getStatement(), vm));
     }
 
     public void printNode() {

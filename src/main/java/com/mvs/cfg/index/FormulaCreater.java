@@ -154,6 +154,9 @@ public class FormulaCreater {
                 for (Var writeVar2 : inputList) {
                     //check if writeVar2 is in other threads with readVar and check if writeVar2 has same name with readVar
                     if (writeVar2.getThreadIndex() < threadNum + 1 && writeVar2.getThreadIndex() != readVar.getThreadIndex() && writeVar2.getName() == readVar.getName()) {
+                        if (!initConstraint.isEmpty() && writeVar2.getThreadIndex() == 0) {
+                            continue;
+                        }
                         //check if writeVar2 is write variable
                         if (writeVar2.getWrIndex() == 0) {
                             String left2 = readVar.getVariableWithIndex();
@@ -188,10 +191,11 @@ public class FormulaCreater {
                                 //check if readVar2 has greater ssaIndex than readVar
                                 if (readVar2.getSsaIndex() > readVar.getSsaIndex()) {
                                     String constraintTemp2 = "";
+
                                     //iterative list of write variables in writeListInSameThread
                                     for (int i = writeListInSameThread.size() - 1; i >= 0; i--) {
                                         Var writeVar2 = writeListInSameThread.get(i);
-                                        if (writeVar2.getSsaIndex() < readVar.getSsaIndex()) {
+                                        if (writeVar2.getSsaIndex() < readVar2.getSsaIndex() && writeVar2.getSsaIndex() > readVar.getSsaIndex()) {
                                             String left2 = readVar2.getVariableWithIndex();
                                             String right2 = writeVar2.getVariableWithIndex();
                                             String constraintTemp3 = wrapPrefix(operand, left2, right2);
@@ -207,6 +211,9 @@ public class FormulaCreater {
                                     for (Var writeVar2 : inputList) {
                                         //check if writeVar2 is in other threads with readVar2 and check if writeVar2 has same name with readVar2
                                         if (writeVar2.getThreadIndex() < threadNum + 1 && writeVar2.getThreadIndex() != readVar2.getThreadIndex() && writeVar2.getName() == readVar2.getName()) {
+                                            if (writeVar2.getThreadIndex() == 0 && writeVar.getThreadIndex() != 0) {
+                                                continue;
+                                            }
                                             //check if writeVar2 is write variable
                                             if (writeVar2.getWrIndex() == 0) {
                                                 //check if writeVar2 has same thread index with writeVar
@@ -243,6 +250,63 @@ public class FormulaCreater {
                                     }
                                 }
                             }
+                            int sizeOfReadListInSameThread = readListInSameThread.size();
+                            if (readVar.getSsaIndex() == readListInSameThread.get(sizeOfReadListInSameThread - 1).getSsaIndex()) {
+                                String left2 = readVar.getName() + "_r" + (threadNum + 1) + "1";
+                                String constraintTemp2 = "";
+
+                                //iterative list of write variables in writeListInSameThread
+                                for (int i = writeListInSameThread.size() - 1; i >= 0; i--) {
+                                    Var writeVar2 = writeListInSameThread.get(i);
+                                    if (writeVar2.getSsaIndex() > readVar.getSsaIndex()) {
+                                        String right2 = writeVar2.getVariableWithIndex();
+                                        String constraintTemp3 = wrapPrefix(operand, left2, right2);
+                                        if (constraintTemp2.isEmpty()) {
+                                            constraintTemp2 = constraintTemp3;
+                                        } else {
+                                            constraintTemp2 = wrapPrefix(LOGIC_OR, constraintTemp2, constraintTemp3);
+                                        }
+                                        break;
+                                    }
+                                }
+                                //iterative list of write variables in other threads
+                                for (Var writeVar2 : inputList) {
+                                    //check if writeVar2 is in other threads with readVar2 and check if writeVar2 has same name with readVar2
+                                    if (writeVar2.getThreadIndex() < threadNum + 1 && writeVar2.getThreadIndex() != readVar.getThreadIndex() && writeVar2.getName() == readVar.getName()) {
+                                        //check if writeVar2 is write variable
+                                        if (writeVar2.getWrIndex() == 0) {
+                                            //check if writeVar2 has same thread index with writeVar
+                                            if (writeVar2.getThreadIndex() == writeVar.getThreadIndex()) {
+                                                //check if writeVar2 has ssaIndex greater than or equal to writeVar
+                                                if (writeVar2.getSsaIndex() >= writeVar.getSsaIndex()) {
+                                                    String right2 = writeVar2.getVariableWithIndex();
+                                                    String constraintTemp3 = wrapPrefix(operand, left2, right2);
+                                                    if (constraintTemp2.isEmpty()) {
+                                                        constraintTemp2 = constraintTemp3;
+                                                    } else {
+                                                        constraintTemp2 = wrapPrefix(LOGIC_OR, constraintTemp2, constraintTemp3);
+                                                    }
+                                                }
+                                            } else {
+                                                String right2 = writeVar2.getVariableWithIndex();
+                                                String constraintTemp3 = wrapPrefix(operand, left2, right2);
+                                                if (constraintTemp2.isEmpty()) {
+                                                    constraintTemp2 = constraintTemp3;
+                                                } else {
+                                                    constraintTemp2 = wrapPrefix(LOGIC_OR, constraintTemp2, constraintTemp3);
+                                                }
+                                            }
+
+                                        }
+                                    }
+                                }
+                                if (constraintTemp4.isEmpty()) {
+                                    constraintTemp4 = constraintTemp2;
+                                } else {
+                                    constraintTemp4 = wrapPrefix(LOGIC_AND, constraintTemp4, constraintTemp2);
+                                }
+                            }
+
                             if (!constraintTemp4.isEmpty()) {
                                 String constraintTemp6 = wrapPrefix(BINARY_CONNECTIVE, constraintTemp, constraintTemp4);
                                 constraint.add(constraintTemp6);
@@ -268,6 +332,18 @@ public class FormulaCreater {
         return writeVarList;
     }
 
+    //get array list of reads variables in the same name
+    public static ArrayList<Var> getReadVarList(VariableManage vm, String name) {
+        ArrayList<Var> readVarList = new ArrayList<Var>();
+        ArrayList<Var> inputList = vm.getInputList();
+        for (Var var : inputList) {
+            if (var.getName() == name && var.getWrIndex() == 1) {
+                readVarList.add(var);
+            }
+        }
+        return readVarList;
+    }
+
     public static List<String> createAdditionalAssert(VariableManage vm) {
         List<String> constraint = new ArrayList<String>();
         ArrayList<Var> inputList = vm.getInputList();
@@ -278,9 +354,44 @@ public class FormulaCreater {
                 String varName = assertVar.getName();
                 ArrayList<Var> writeVarList = getWriteVarList(vm, varName);
                 String constraintTemp2 = "";
+                String leftTemp = assertVar.getVariableWithIndex();
+                String rightTemp = assertVar.getName() + "_w01";
+                String constraintTemp3 = wrapPrefix("=", leftTemp, rightTemp);
+                constraintTemp3 = wrapPrefix(NEGATIVE, constraintTemp3, "");
+                String constraintTemp4 = "";
                 for (Var writeVar : writeVarList) {
                     String left = assertVar.getVariableWithIndex();
                     String right = writeVar.getVariableWithIndex();
+                    String constraintTemp5 = wrapPrefix("=", left, right);
+                    if (constraintTemp2.isEmpty()) {
+                        constraintTemp2 = constraintTemp5;
+                    } else {
+                        constraintTemp2 = wrapPrefix(LOGIC_OR, constraintTemp2, constraintTemp5);
+                    }
+                    if (writeVar.getThreadIndex() != 0) {
+                        if (constraintTemp4.isEmpty()) {
+                            constraintTemp4 = constraintTemp5;
+                        } else {
+                            constraintTemp4 = wrapPrefix(LOGIC_OR, constraintTemp4, constraintTemp5);
+                        }
+                    }
+                }
+                constraintTemp3 = wrapPrefix(BINARY_CONNECTIVE, constraintTemp3, constraintTemp4);
+                if (!constraintTemp2.isEmpty()) {
+                    constraint.add(constraintTemp2);
+                }
+                constraint.add(constraintTemp3);
+            }
+        }
+
+        for (Var globalVar : inputList) {
+            if (globalVar.getThreadIndex() == 0 && globalVar.getWrIndex() == 0) {
+                String varName = globalVar.getName();
+                ArrayList<Var> readVarList = getReadVarList(vm, varName);
+                String constraintTemp2 = "";
+                for (Var readVar : readVarList) {
+                    String left = readVar.getVariableWithIndex();
+                    String right = globalVar.getVariableWithIndex();
                     String constraintTemp3 = wrapPrefix("=", left, right);
                     if (constraintTemp2.isEmpty()) {
                         constraintTemp2 = constraintTemp3;
@@ -293,7 +404,6 @@ public class FormulaCreater {
                 }
             }
         }
-
 
         return constraint;
     }

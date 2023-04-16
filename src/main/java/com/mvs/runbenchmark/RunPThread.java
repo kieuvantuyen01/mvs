@@ -15,7 +15,7 @@ public class RunPThread {
     public static void main(String[] args) throws WriteException, IOException {
         ExportExcel exportExcel = new ExportExcel("mvs Report.xls");
 
-        File file = new File("./src/main/resources/benchmark/pthread/stateful01_1.c");
+        File file = new File("./src/main/resources/benchmark/pthread/test.c");
         FileVerification fv = new FileVerification();
         List<VerificationReport> reportList = fv.verifyDirectory(file, FunctionVerification.UNFOLD_MODE);
         exportExcel.writeExcel(reportList);

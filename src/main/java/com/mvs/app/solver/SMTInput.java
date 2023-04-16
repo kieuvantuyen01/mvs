@@ -1,7 +1,6 @@
 package com.mvs.app.solver;
 
 import com.mvs.cfg.index.Var;
-import com.mvs.cfg.index.Variable;
 
 import java.io.*;
 import java.util.List;
@@ -91,10 +90,10 @@ public class SMTInput {
             if (v.hasInitialized()) {
 
                 //System.out.println("v: " + v);
-                /*if (v.getIndex() < 0)
+                /*if (v.getSsaIndex() < 0)
                     out.append("(declare-fun " + v.getVariableWithIndex() + " () " + smtType + ")\n");
                 else {
-                    int imax = (v.getIndexInvariant() > v.getIndex()) ? v.getIndexInvariant() : v.getIndex();
+                    int imax = (v.getIndexInvariant() > v.getSsaIndex()) ? v.getIndexInvariant() : v.getSsaIndex();
                     for (int i = -1; i <= imax; i++)
                         out.append(declare(v.getName(), i, smtType) + "\n");
                 }*/

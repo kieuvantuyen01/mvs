@@ -3,7 +3,6 @@ package com.mvs.cfg.build;
 import com.mvs.app.solver.SMTTypeConvertion;
 import com.mvs.cfg.index.FormulaCreater;
 import com.mvs.cfg.index.Var;
-import com.mvs.cfg.index.Variable;
 import com.mvs.cfg.index.VariableManage;
 import com.mvs.cfg.node.*;
 import com.mvs.cfg.utils.FunctionHelper;

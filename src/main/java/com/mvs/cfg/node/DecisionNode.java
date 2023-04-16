@@ -225,7 +225,7 @@ public class DecisionNode extends CFGNode {
      * flag : = true neu can them syncNode va nguoc lai
      */
     private VariableManage sync(VariableManage vm) {
-        int size = thenVM.getInputListSize();
+        int size = Math.min(thenVM.getInputListSize(), elseVM.getInputListSize());
         Var thenVar;
         Var elseVar;
         String leftHand;
@@ -273,12 +273,10 @@ public class DecisionNode extends CFGNode {
             elseVar = elseVM.getVar(i);
 
             if (thenVar.getSsaIndex() < elseVar.getSsaIndex()) {
-                rightHand = thenVar.getVariableWithIndex();
-/*
+                /*rightHand = thenVar.getVariableWithIndex();
                 thenVar.setSsaIndex(elseVar.getSsaIndex());
-*/
                 leftHand = thenVar.getVariableWithIndex();
-                syncNode = new SyncNode(leftHand, rightHand);
+                syncNode = new SyncNode(leftHand, rightHand);*/
                 thenVM.getInputList().add(elseVar);
 
                 /*this.endOfThen.setNext(syncNode);

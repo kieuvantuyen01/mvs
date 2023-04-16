@@ -1,8 +1,8 @@
 package com.mvs.cfg.node;
 
 import com.mvs.cfg.index.FormulaCreater;
-import com.mvs.cfg.index.Index;
-import com.mvs.cfg.index.VariableManager;
+import com.mvs.cfg.index.Indexer;
+import com.mvs.cfg.index.VariableManage;
 import com.mvs.cfg.utils.ExpressionHelper;
 import com.mvs.cfg.utils.ExpressionModifier;
 import org.eclipse.cdt.core.dom.ast.*;
@@ -80,8 +80,8 @@ public class IterationNode extends CFGNode {
         this.iterationExpression = (IASTExpression) ExpressionModifier.changeVariableName(iterationExpression, func);
     }
 
-    public void index(VariableManager vm) {
-        this.iterationExpression = (IASTExpression) Index.index(iterationExpression, vm);
+    public void index(VariableManage vm) {
+        this.iterationExpression = (IASTExpression) Indexer.index(iterationExpression, vm);
         //System.out.println( "--" + iterationExpression.);
     }
 

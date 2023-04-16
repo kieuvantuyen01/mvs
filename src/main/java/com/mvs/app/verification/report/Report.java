@@ -2,7 +2,6 @@ package com.mvs.app.verification.report;
 
 import com.mvs.app.utils.PrefixToInfix;
 import com.mvs.cfg.index.Var;
-import com.mvs.cfg.index.Variable;
 import com.mvs.cfg.utils.FunctionHelper;
 
 import java.util.ArrayList;

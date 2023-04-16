@@ -2,7 +2,6 @@ package com.mvs.app.verification.userassertion;
 
 import com.mvs.app.utils.InfixToPrefix;
 import com.mvs.cfg.index.Var;
-import com.mvs.cfg.index.Variable;
 import com.mvs.cfg.index.VariableManage;
 
 import java.io.IOException;

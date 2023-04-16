@@ -9,6 +9,16 @@ public class Var {
     private int wrIndex = -1;
     private boolean isDuplicated;
 
+    public int getIndexInvariant() {
+        return indexInvariant;
+    }
+
+    public void setIndexInvariant(int indexInvariant) {
+        this.indexInvariant = indexInvariant;
+    }
+
+    private int indexInvariant = -1; //the index use in java.invariant
+
     public Var() {
     }
 
@@ -151,6 +161,15 @@ public class Var {
                 ", wrIndex=" + wrIndex +
                 ", isDuplicated=" + isDuplicated +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) return false;
+        if (obj == this) return true;
+        if (!(obj instanceof Var)) return false;
+        Var other = (Var) obj;
+        return other.name.equals(this.name) && other.ssaIndex == this.ssaIndex && other.threadIndex == this.threadIndex;
     }
 
     public boolean hasInitialized() {

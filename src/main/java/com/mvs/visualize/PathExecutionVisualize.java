@@ -10,7 +10,6 @@ import com.mvs.app.verification.userassertion.UserInput;
 import com.mvs.cfg.build.mvsCFG;
 import com.mvs.cfg.index.FormulaCreater;
 import com.mvs.cfg.index.Var;
-import com.mvs.cfg.index.Variable;
 import com.mvs.cfg.index.VariableManage;
 import com.mvs.cfg.node.CFGNode;
 import com.mvs.cfg.node.DecisionNode;

@@ -7,7 +7,6 @@ import com.mvs.cfg.build.ASTFactory;
 import com.mvs.cfg.build.ControlFlowGraph;
 import com.mvs.cfg.build.mvsCFG;
 import com.mvs.cfg.index.Var;
-import com.mvs.cfg.index.Variable;
 import org.eclipse.cdt.core.dom.ast.IASTFunctionDefinition;
 
 import java.io.File;
