@@ -251,7 +251,7 @@ public class FormulaCreater {
                                 }
                             }
                             int sizeOfReadListInSameThread = readListInSameThread.size();
-                            if (readVar.getSsaIndex() == readListInSameThread.get(sizeOfReadListInSameThread - 1).getSsaIndex()) {
+                            if (readVar.getSsaIndex() == readListInSameThread.get(sizeOfReadListInSameThread - 1).getSsaIndex() && !getReadVarListInSameThread(vm, threadNum + 1, readVar.getName()).isEmpty()) {
                                 String left2 = readVar.getName() + "_r" + (threadNum + 1) + "1";
                                 String constraintTemp2 = "";
 
@@ -272,7 +272,7 @@ public class FormulaCreater {
                                 //iterative list of write variables in other threads
                                 for (Var writeVar2 : inputList) {
                                     //check if writeVar2 is in other threads with readVar2 and check if writeVar2 has same name with readVar2
-                                    if (writeVar2.getThreadIndex() < threadNum + 1 && writeVar2.getThreadIndex() != readVar.getThreadIndex() && writeVar2.getName() == readVar.getName()) {
+                                    if (writeVar2.getThreadIndex() >= writeVar.getThreadIndex() && writeVar2.getThreadIndex() < threadNum + 1 && writeVar2.getThreadIndex() != readVar.getThreadIndex() && writeVar2.getName() == readVar.getName()) {
                                         //check if writeVar2 is write variable
                                         if (writeVar2.getWrIndex() == 0) {
                                             //check if writeVar2 has same thread index with writeVar
@@ -376,7 +376,9 @@ public class FormulaCreater {
                         }
                     }
                 }
-                constraintTemp3 = wrapPrefix(BINARY_CONNECTIVE, constraintTemp3, constraintTemp4);
+                if (!constraintTemp4.isEmpty()) {
+                    constraintTemp3 = wrapPrefix(BINARY_CONNECTIVE, constraintTemp3, constraintTemp4);
+                }
                 if (!constraintTemp2.isEmpty()) {
                     constraint.add(constraintTemp2);
                 }

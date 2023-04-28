@@ -2,7 +2,6 @@ int x = 0;
 int n = 20;
 int check_x = -1;
 void *t1() {
-    if (x > 20)
     {
         check_x = 1
     }
@@ -14,7 +13,7 @@ void *t2() {
     x = t + 1;
 }
 
-int nondet_loop_bound_1()
+int nondet_loop_bound_2()
 {
 	t1();
 
