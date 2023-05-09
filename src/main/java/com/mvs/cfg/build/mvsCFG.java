@@ -16,6 +16,7 @@ import java.util.List;
 
 public class mvsCFG extends ControlFlowGraph {
     private VariableManage vm;
+    List<Var> parameters;
     @SuppressWarnings("unused")
     private String returnType;
 
@@ -33,6 +34,10 @@ public class mvsCFG extends ControlFlowGraph {
     public mvsCFG(IASTFunctionDefinition func, ASTFactory ast) {
         super(func, ast);
         vm = FunctionHelper.getVM(ast.getListFunction());
+    }
+
+    public void printMetaSMT(PrintStream printStream) {
+        printMeta(printStream, start, exit, " ");
     }
 
     private static void printMeta(PrintStream printStream, CFGNode node, CFGNode end, String nSpaces) {
@@ -200,6 +205,14 @@ public class mvsCFG extends ControlFlowGraph {
             iteration(iter.getNext());
         }
 
+    }
+
+    public List<Var> getParameters() {
+        return parameters;
+    }
+
+    public void setParameters(List<Var> parameters) {
+        this.parameters = parameters;
     }
 
     private void DFSHelper(CFGNode node) {

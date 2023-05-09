@@ -217,12 +217,12 @@ public class MainPanel extends JPanel {
 		});
 		head.add(refreshBtn);
 		
-		vertificationBtn = new JButton("Vertification");
+		vertificationBtn = new JButton("Verification");
 		vertificationBtn.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				vertification();
+				verification();
 			}
 		});
 		head.add(vertificationBtn);
@@ -443,7 +443,7 @@ public class MainPanel extends JPanel {
 		}
 	}
 	
-	private void vertification() {
+	private void verification() {
 		String precondition = preconditionTA.getText();
 		String postcondition = postconditionTA.getText();
 		
@@ -471,7 +471,7 @@ public class MainPanel extends JPanel {
 		try {
 			resultTA.setText("");
 			
-			List<String> outputList = core.runSolver(index, postcondition, precondition);
+			List<String> outputList = core.runSolver(postcondition, precondition);
 			List<String> solverLog = core.getSolverLog();
 			
 			String state = outputList.get(0);
