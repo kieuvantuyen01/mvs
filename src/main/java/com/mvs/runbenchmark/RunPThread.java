@@ -22,7 +22,7 @@ public class RunPThread {
         String dateStr = dateFormat.format(date);
         ExportExcel exportExcel = new ExportExcel("mvs Report" + dateStr + ".xls");
 
-        File file = new File("./src/main/resources/benchmark/pthread_deagle/");
+        File file = new File("./src/main/resources/benchmark/pthread/triangular_1.c");
         FileVerification fv = new FileVerification();
         List<VerificationReport> reportList = fv.verifyDirectory(file, FunctionVerification.UNFOLD_MODE);
         exportExcel.writeExcel(reportList);

@@ -22,7 +22,7 @@ int triangular_1()
 {
   t1();
   t2();
-  if (i > 16 || j > 16)
+  if (i >= 16 || j >= 16)
   {
     return 1;
   }
